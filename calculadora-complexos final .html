@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Números Complexos</title>
+<meta name="description" content="Calculadora de números complexos: soma, subtração, multiplicação, divisão, módulo, potência e forma trigonométrica.">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+header {
+    background-color: #2c7be5;
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+input, select {
+    padding: 8px;
+    margin: 10px;
+    width: 160px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #2c7be5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #1a5dc9;
+}
+
+.box {
+    background: #f9f9f9;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 6px;
+    text-align: left;
+}
+
+.adsense {
+    margin: 30px auto;
+    height: 250px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    color: #555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Calculadora de Números Complexos</h1>
+<p>Escolha a operação e insira os números complexos</p>
+</header>
+
+<div class="container">
+    <h3>Digite os números complexos</h3>
+
+    <!-- Menu suspenso para seleção da operação -->
+    <select id="operationSelect">
+        <option value="soma">Soma</option>
+        <option value="sub">Subtração</option>
+        <option value="mult">Multiplicação</option>
+        <option value="div">Divisão</option>
+        <option value="pot">Potência (z₁²)</option>
+        <option value="mod">Módulos</option>
+        <option value="trig">Forma Trigonométrica</option>
+    </select>
+
+    <br>
+
+    <!-- Entradas para os números complexos -->
+    <input type="number" id="a1" placeholder="a₁ (real)">
+    <input type="number" id="b1" placeholder="b₁ (imag)">
+    <br>
+    <input type="number" id="a2" placeholder="a₂ (real)">
+    <input type="number" id="b2" placeholder="b₂ (imag)">
+
+    <br>
+    <!-- Botão para calcular -->
+    <button onclick="calcular()">Calcular</button>
+
+    <div class="box" id="display">
+        <strong>Complexos:</strong><br>
+        z₁ = — <br>
+        z₂ = —
+    </div>
+
+    <div class="box" id="resultado">
+        <strong>Resultado:</strong><br>
+        Aguardando operação...
+    </div>
+</div>
+
+<!-- Espaço para o Google AdSense -->
+<div class="adsense">
+    Espaço para Google AdSense
+</div>
+
+<script>
+function calcular() {
+    let a1 = parseFloat(document.getElementById("a1").value);
+    let b1 = parseFloat(document.getElementById("b1").value);
+    let a2 = parseFloat(document.getElementById("a2").value);
+    let b2 = parseFloat(document.getElementById("b2").value);
+    let operacao = document.getElementById("operationSelect").value;
+
+    if (isNaN(a1) || isNaN(b1)) {
+        alert("Digite ao menos o primeiro número complexo.");
+        return;
+    }
+
+    // Exibir o formato algébrico dos números complexos
+    document.getElementById("display").innerHTML =
+        `<strong>Complexos:</strong><br>
+        z₁ = ${a1} ${b1 >= 0 ? '+' : ''}${b1}i<br>
+        z₂ = ${!isNaN(a2) ? a2 : '—'} ${b2 >= 0 ? '+' : ''}${!isNaN(b2) ? b2 : '—'}i`;
+
+    let res = "";
+
+    // Processar as operações
+    switch (operacao) {
+        case "soma":
+            res = `${a1 + a2} ${b1 + b2 >= 0 ? '+' : ''}${b1 + b2}i`;
+            break;
+
+        case "sub":
+            res = `${a1 - a2} ${b1 - b2 >= 0 ? '+' : ''}${b1 - b2}i`;
+            break;
+
+        case "mult":
+            res = `${a1 * a2 - b1 * b2} ${a1 * b2 + b1 * a2 >= 0 ? '+' : ''}${a1 * b2 + b1 * a2}i`;
+            break;
+
+        case "div":
+            let den = a2 * a2 + b2 * b2;
+            res = `${((a1 * a2 + b1 * b2) / den).toFixed(4)} ${((b1 * a2 - a1 * b2) / den) >= 0 ? '+' : ''}${((b1 * a2 - a1 * b2) / den).toFixed(4)}i`;
+            break;
+
+        case "pot":
+            res = `${a1 * a1 - b1 * b1} ${2 * a1 * b1 >= 0 ? '+' : ''}${2 * a1 * b1}i`;
+            break;
+
+        case "mod":
+            res = `|z₁| = ${Math.sqrt(a1 * a1 + b1 * b1).toFixed(4)}<br>
+                   |z₂| = ${Math.sqrt(a2 * a2 + b2 * b2).toFixed(4)}`;
+            break;
+
+        case "trig":
+            // Exibir apenas o primeiro número complexo na forma trigonométrica
+            let r = Math.sqrt(a1 * a1 + b1 * b1);
+            let t = Math.atan2(b1, a1) * (180 / Math.PI);
+            res = `z₁ = ${r.toFixed(4)} (cos ${t.toFixed(2)}° + i sen ${t.toFixed(2)}°)`;
+            break;
+    }
+
+    // Exibir o resultado
+    document.getElementById("resultado").innerHTML =
+        `<strong>Resultado:</strong><br>${res}`;
+}
+</script>
+
+</body>
+</html>
